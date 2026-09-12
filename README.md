@@ -24,25 +24,25 @@
 ---
 
 ## 🚆 Project Overview
-**RailSync** simulates an authentic Indian Railways passenger reservation and dynamic seat inventory system. It models the end-to-end lifecycle of railway operations: searching trains across routes, calculating dynamic distance-based fares with age concessions, allocating confirmed coach berths, managing FIFO queues for **Reservation Against Cancellation (RAC)** and **Waiting List (WL)**, orchestrating automatic promotion cascades upon cancellations, providing interactive PNR enquiries, and simulating high-concurrency surge booking traffic with thread-safe synchronization.
+**RailSync** is a Java desktop application that simulates a train reservation and dynamic seat management system. It models the core operations of passenger booking: searching trains across routes, calculating distance-based fares with age concessions, allocating confirmed coach berths, managing FIFO queues for **Reservation Against Cancellation (RAC)** and **Waiting List (WL)**, automatically promoting passengers upon cancellations, providing PNR status enquiries, and demonstrating concurrent booking with thread-safe synchronization.
 
 ---
 
 ## 🎯 Problem Statement
-Conventional student railway reservation projects are typically simplistic, sequential console scripts that hard-code booking outcomes and lack real-world inventory dynamics. In contrast, real railway platforms require:
-1. **Dynamic Inventory Allocation**: Transitioning seamlessly from Confirmed berths to RAC shared seats, and subsequently to Waiting List queues.
-2. **Cancellation Promotion Cascade**: When a confirmed passenger cancels, an RAC passenger must instantly be promoted to Confirmed status with a physical berth assigned, and the foremost Waiting List passenger must be elevated into the RAC queue.
-3. **Thread Safety & Race Conditions**: High-surge booking traffic where multiple concurrent threads target the exact same remaining seats must guarantee zero duplicate allocations without deadlocks.
-4. **Data Persistence**: Preserving deep object graphs (trains, coaches, seats, queued tickets) without relying on heavyweight SQL databases or third-party ORMs.
+Standard classroom projects often treat railway booking as a simple counter decrement. RailSync models the more realistic behavior of a reservation system:
+1. **Dynamic Inventory Allocation**: Transitioning from Confirmed berths to RAC shared seats, and subsequently to Waiting List queues.
+2. **Cancellation Promotion Cascade**: When a confirmed passenger cancels, an RAC passenger is promoted to Confirmed status with a berth assigned, and the first Waiting List passenger moves into RAC.
+3. **Thread Safety & Race Conditions**: Managing simultaneous booking requests on the same train to prevent double-booking.
+4. **Data Persistence**: Preserving object state across application restarts using standard Java serialization and file I/O.
 
 ---
 
 ## 🌟 Key Objectives
-- To implement an authentic, object-oriented simulation of train ticketing using pure Java standard libraries.
+- To implement a train ticketing simulation using standard Java libraries.
 - To demonstrate **polymorphism and inheritance** via specialized train classes (`RajdhaniExpress`, `VandeBharatExpress`, `ShatabdiExpress`, `SuperfastExpress`, `ExpressTrain`).
-- To employ the **Java Collections Framework** (`HashMap`, `ArrayList`, `HashSet`, `LinkedList`, `PriorityQueue`) purposefully according to time complexity needs.
-- To model real-world **concurrency and thread synchronization** to eliminate race conditions.
-- To provide a modern, responsive **Java Swing GUI** adhering to the separation of concerns (presentation separated from domain logic).
+- To employ the **Java Collections Framework** (`HashMap`, `ArrayList`, `HashSet`, `LinkedList`, `PriorityQueue`) based on data structure requirements.
+- To apply **multithreading and synchronization** to avoid race conditions during concurrent bookings.
+- To provide a clean **Java Swing GUI** with separated presentation and business logic layers.
 
 ---
 
@@ -158,6 +158,8 @@ RailSync/
             ├── thread/                   # Concurrency simulation
             │   ├── BookingTask.java
             │   └── ConcurrencySimulation.java
+            ├── cli/                      # Command-Line Console Interface
+            │   └── ConsoleApp.java       # Interactive terminal reservation application
             └── gui/                      # Presentation layer (Swing)
                 ├── ModernTheme.java
                 ├── LoginDialog.java
@@ -181,50 +183,156 @@ The application is pre-seeded with sample users. You can authenticate via the di
 
 ---
 
-## 🛠️ How to Build and Run
+## ⚙️ System Requirements & Environment Setup
 
-### Prerequisites
-- Java Development Kit (JDK 17 or newer, tested on JDK 25).
-- Operating System: Windows, Linux, or macOS.
+- **Java Runtime / Compiler**: JDK 17 or newer (tested on Java 17, 21, and 25).
+- **Dependencies**: **Zero** external third-party dependencies. Built 100% on standard Java SE packages (`java.time`, `java.util`, `java.io`, `java.util.concurrent`, `javax.swing`).
+- **Operating System**: Cross-platform (Windows, Linux, macOS).
+- **Configuration**: No database setup or external configuration needed. Data is persisted automatically in `data/railsync_data.ser` via Java Object Serialization.
 
-### Running on Windows
+---
 
-#### Option 1: One-Click Batch Scripts (Recommended)
-1. **Build the project**:
-   ```cmd
-   build.bat
-   ```
-2. **Launch the GUI**:
-   ```cmd
-   run.bat
-   ```
-3. **Run the Automated Test Suite**:
-   ```cmd
-   test.bat
-   ```
-4. **Package and Run Standalone Executable JAR**:
-   ```cmd
-   package.bat
-   java -jar RailSync.jar
-   ```
+## 🛠️ Step-by-Step Compilation
 
-#### Option 2: Running the Pre-Packaged Runnable JAR Directly
-If you already have Java 17+ installed on any platform (Windows, macOS, Linux):
+You can compile the project using standard Java command-line tools without any IDE:
+
+### A. Windows (CMD / Batch)
+```cmd
+build.bat
+```
+*Or manual compilation from repository root:*
+```cmd
+if not exist bin mkdir bin
+dir /s /b src\*.java > sources.txt
+javac -encoding UTF-8 -d bin @sources.txt
+del sources.txt
+```
+
+### B. Linux / macOS / Bash
+```bash
+mkdir -p bin
+javac -encoding UTF-8 -d bin $(find src -name "*.java")
+```
+
+### C. Universal PowerShell
+```powershell
+.\build_and_run.ps1
+```
+
+---
+
+## 💻 Step-by-Step Command-Line Execution (CLI Mode)
+
+The project includes an interactive terminal-based console application (`ConsoleApp`) that executes directly in the terminal without opening a graphical window.
+
+### How to Run CLI Mode:
+
+#### Option 1: Direct Class Execution
+```bash
+java -cp bin com.railsync.cli.ConsoleApp
+```
+
+#### Option 2: Via Main Application Flag
+```bash
+java -cp bin com.railsync.Main --cli
+```
+
+#### Option 3: Using the Executable JAR
+```bash
+java -jar RailSync.jar --cli
+```
+
+#### Option 4: Using Windows Batch Script
+```cmd
+run.bat --cli
+```
+
+### Example CLI Interactive Menu:
+```
+==================================================================
+        RailSync – Interactive Command-Line Console Application   
+               Core Java Train Reservation System                 
+==================================================================
+------------------------- MAIN MENU ------------------------------
+  1. Search Trains (by Source & Destination)
+  2. View All Trains Catalog
+  3. Book Train Ticket
+  4. PNR Status Enquiry
+  5. Cancel Ticket (with Promotion Cascade & Refund)
+  6. View RAC & Waiting List Queue Status
+  7. Dynamic Fare & Concession Calculator
+  8. Save System State to Disk
+  9. Exit
+------------------------------------------------------------------
+Enter your choice (1-9):
+```
+
+### Example Booking Flow in CLI:
+1. Choose option **`3`** (Book Train Ticket).
+2. Enter Train Number: `12952` (Mumbai Rajdhani).
+3. Press **Enter** to select the default date (tomorrow).
+4. Select Class: `1` for AC First Class (`1A`).
+5. Enter number of passengers: `1`.
+6. Enter details: `Rajesh Kumar`, Age `35`, Gender `M`, Phone `9876543210`, Berth `1` (Lower).
+7. System processes transaction, allocates confirmed berth `H1-1`, and prints:
+```
+================ BOOKING CONFIRMATION ================
+PNR Number        : RS989137
+Booking ID        : BK10004
+Train             : 12952 - Mumbai Rajdhani
+Route             : NDLS -> BCT
+Journey Date      : 2026-09-13
+Travel Class      : AC First Class (1A)
+Total Amount Paid : ₹4880.00
+
+Allocated Passenger Tickets:
+Ticket ID      | Passenger        | Age  | Status          | Seat/Berth              | Fare      
+------------------------------------------------------------------------------------------------
+TK-RS989137-1  | Rajesh Kumar     | 35   | Confirmed (CNF) | H1-1 (Lower Berth (LB)) | ₹4880.00  
+======================================================
+```
+
+---
+
+## 🖥️ Graphical User Interface (GUI) Execution
+
+To launch the Java Swing desktop application:
+
+#### Option 1: One-Click Batch Script (Windows)
+```cmd
+run.bat
+```
+
+#### Option 2: Running Standalone JAR
 ```bash
 java -jar RailSync.jar
 ```
-*(Or double-click `RailSync.jar` on Windows).*
+*(Or double-click `RailSync.jar` on Windows/macOS).*
 
-#### Option 3: PowerShell Script
-```powershell
-# Run the GUI application
-.\build_and_run.ps1
+#### Option 3: Direct Class Execution
+```bash
+java -cp bin com.railsync.Main
+```
 
-# Run the 15-test verification suite
-.\build_and_run.ps1 --test
+---
 
-# Run CLI diagnostics mode
-.\build_and_run.ps1 --cli
+## 🧪 Test Execution Instructions
+
+RailSync includes a standalone 15-scenario verification test harness testing all reservation rules, promotions, thread safety, and persistence:
+
+#### Option 1: One-Click Batch Script (Windows)
+```cmd
+test.bat
+```
+
+#### Option 2: Direct Test Runner Execution
+```bash
+java -cp bin com.railsync.TestRunner
+```
+
+#### Option 3: Via Executable JAR
+```bash
+java -jar RailSync.jar --test
 ```
 
 ---

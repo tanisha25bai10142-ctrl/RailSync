@@ -7,57 +7,57 @@
 ---
 
 ## 1. Introduction
-Railway passenger reservation systems represent one of the most complex, mission-critical distributed engineering domains in modern transportation infrastructure. In a country like India, Indian Railways (IRCTC) processes millions of bookings every single day, handling dynamic ticket status transitions, high-concurrency ticket surges, tiered waiting lists, and automated promotion cascades.
+Railway passenger reservation systems manage ticket bookings, seat cancellations, waiting lists, and queue promotions. In ticketing operations, passenger demand often exceeds confirmed capacity, requiring queue management mechanisms such as Reservation Against Cancellation (RAC) and Waiting Lists (WL).
 
-**RailSync** is an industrial-grade, authentic simulation of this reservation architecture built from first principles using pure Core Java. The system avoids external frameworks (such as Spring, Hibernate, or web stacks) to establish a rigorous, transparent demonstration of fundamental computer science and object-oriented software engineering paradigms.
+**RailSync** is a Java-based desktop application designed to simulate the core operations of a train reservation and dynamic seat management system. Developed with Core Java and Java Swing, the project demonstrates key object-oriented programming concepts, collections, and concurrency without relying on external web frameworks.
 
 ---
 
 ## 2. Problem Statement
-Many educational software projects simplify railway booking to an unrealistic array or static table where a user simply decrements a counter. Such systems fail to model:
-1. **Dynamic Queue States**: Real booking involves confirmed berths, shared RAC (Reservation Against Cancellation) berths, and queued Waiting List positions.
-2. **Atomic Queue Promotion**: Cancelling a confirmed ticket must immediately promote the foremost RAC passenger to confirmed status with a specific physical berth assigned, and subsequently promote the foremost Waiting List passenger to RAC status.
-3. **High Concurrency & Race Conditions**: When hundreds of concurrent user threads compete for the final remaining seat at the same millisecond, naive unsynchronized code causes duplicate seat assignments, corrupted seat numbers, or lost updates.
-4. **Complex Tariff Logic**: Fares depend on distance slabs, train classifications, coach comfort multipliers, reservation fees, and age-based statutory concessions.
-5. **Stateful Persistence**: Deep interconnected object graphs containing coaches, berths, passenger records, and ticket queues must be saved and loaded across application restarts without data loss.
+Standard academic projects often simplify railway booking to a single counter decrement in an array. Such approaches do not demonstrate:
+1. **Dynamic Queue States**: Progression from Confirmed berths to RAC shared seats, and subsequently to Waiting List queues.
+2. **Queue Promotion Cascade**: When a confirmed passenger cancels, an RAC passenger is promoted to Confirmed status with an allocated berth, and the first Waiting List passenger moves into RAC.
+3. **Concurrency & Thread Safety**: Handling simultaneous booking requests on the same train to prevent duplicate seat allocations.
+4. **Tariff Calculations**: Computing fares based on travel distance, train category, coach class, and age concessions.
+5. **Data Persistence**: Saving and restoring passenger bookings, train schedules, and queue states across sessions using standard Java serialization.
 
 ---
 
 ## 3. Objectives
-- Design and develop an authentic, end-to-end Railway Reservation System using modern Core Java (Java 17+).
-- Demonstrate substantial mastery over fundamental and advanced Java concepts:
+- Design and develop a functional Railway Reservation System simulation using Core Java (Java 17+).
+- Demonstrate fundamental and advanced Java concepts:
   - Object-Oriented Programming (Inheritance, Polymorphism, Encapsulation, Abstraction).
   - The Java Collections Framework (`HashMap`, `ArrayList`, `HashSet`, `LinkedList`, `PriorityQueue`).
-  - Robust Multithreading and Concurrency Synchronization (`synchronized`, `Thread`, `Runnable`, `CountDownLatch`).
-  - Custom Exception Hierarchies with graceful error recovery.
+  - Multithreading and Synchronization (`synchronized`, `Thread`, `Runnable`, `CountDownLatch`).
+  - Custom Exception Hierarchies with input validation and error handling.
   - Java File I/O (Character Streams and Object Serialization).
-  - Modern Java Time API (`LocalDate`, `LocalTime`, `LocalDateTime`, `Duration`).
-  - Responsive, decoupled desktop GUI built using Java Swing.
+  - Java Time API (`LocalDate`, `LocalTime`, `LocalDateTime`, `Duration`).
+  - Desktop GUI built using Java Swing with clean separation of presentation and logic.
 - Provide comprehensive automated test verification proving thread safety and promotion accuracy.
 
 ---
 
 ## 4. Proposed System
-RailSync proposes a decoupled, layered software architecture where business logic, data models, persistence, and concurrency engines are completely isolated from the presentation layer (GUI). 
+RailSync proposes a decoupled, layered software architecture where business logic, data models, persistence, and concurrency engines are completely isolated from the presentation layer (GUI and CLI). 
 
 ```
-[ Presentation Layer: Java Swing GUI (RailSyncGUI / Panels) ]
-                             │
-                             ▼
+[ Presentation Layer: Java Swing GUI (RailSyncGUI) / Command-Line CLI (ConsoleApp) ]
+                                      │
+                                      ▼
 [ Manager Layer: ReservationManager / WaitingListManager / FileManager ]
-                             │
-                             ▼
+                                      │
+                                      ▼
 [ Service Layer: DynamicFareCalculator / SearchService / AnalyticsService ]
-                             │
-                             ▼
+                                      │
+                                      ▼
 [ Model Layer: Train Hierarchy / Coach / Seat / Booking / Ticket / User ]
-                             │
-                             ▼
+                                      │
+                                      ▼
 [ Persistence Layer: Java Object Serialization / File I/O (.ser / .txt) ]
 ```
 
 ### Key Highlights of Proposed System:
-- **Role-Based Workflows**: Separate views for Passengers and Railway Administrators.
+- **Role-Based Workflows**: Separate views for Passengers and Railway Administrators in GUI and interactive CLI menus.
 - **Dynamic Berth Assignment**: Coaches manage realistic seat numbering (e.g. `B1-21`) and berth types (`Lower`, `Middle`, `Upper`, `Side Lower`, `Side Upper`, `Window`, `Aisle`).
 - **Cascade Engine**: Real-time queue promotion upon ticket cancellations.
 - **Concurrency Simulator**: An integrated laboratory to stress-test seat allocation with simultaneous worker threads.
@@ -93,7 +93,8 @@ RailSync follows a modular, package-based architecture:
 - `com.railsync.exception`: Domain-specific checked exceptions (`RailSyncException` hierarchy).
 - `com.railsync.util`: Helper utilities (`PNRGenerator`, `ValidationUtils`, `SampleDataSeeder`).
 - `com.railsync.thread`: Concurrency engine (`BookingTask`, `ConcurrencySimulation`).
-- `com.railsync.gui`: Presentation layer (`RailSyncGUI`, `ModernTheme`, `LoginDialog`, `PassengerPanel`, `AdminPanel`, `ConcurrencySimulationPanel`).
+- `com.railsync.gui`: Desktop graphical presentation layer (`RailSyncGUI`, `ModernTheme`, `LoginDialog`, `PassengerPanel`, `AdminPanel`, `ConcurrencySimulationPanel`).
+- `com.railsync.cli`: Interactive terminal presentation layer (`ConsoleApp`).
 
 ---
 
@@ -383,4 +384,4 @@ method within 3-5 business days as per IR rules.
 ---
 
 ## 18. Conclusion
-**RailSync** successfully delivers a robust, authentic, and modern implementation of an intelligent Railway Reservation & Dynamic Seat Management System. By adhering strictly to the constraints of the "Programming in Java" course curriculum, the application comprehensively demonstrates OOP inheritance hierarchies, the Collections Framework, multithreaded synchronization, custom exception handling, file persistence, and graphical user interfaces. It serves as an exemplary college project showcasing both academic rigor and real-world engineering fidelity.
+**RailSync** provides a functional implementation of a train reservation and dynamic seat management system. Developed within the scope of the Programming in Java course curriculum, the application demonstrates object-oriented programming principles, the Collections Framework, multithreading and synchronization, custom exception handling, file I/O persistence, and a Java Swing user interface.

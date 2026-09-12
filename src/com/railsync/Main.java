@@ -41,8 +41,20 @@ public class Main {
         // Load existing serialized state or seed sample data
         loadOrSeedData(manager, dataFile);
 
-        if (args.length > 0 && "--cli".equalsIgnoreCase(args[0])) {
+        if (args.length > 0 && ("--cli".equalsIgnoreCase(args[0]) || "--console".equalsIgnoreCase(args[0]))) {
+            com.railsync.cli.ConsoleApp.start(manager, dataFile);
+            return;
+        }
+
+        if (args.length > 0 && "--diagnostics".equalsIgnoreCase(args[0])) {
             runCliDiagnostics(manager);
+            return;
+        }
+
+        // Auto-fallback to ConsoleApp if running in a headless environment without display
+        if (java.awt.GraphicsEnvironment.isHeadless()) {
+            System.out.println("[INFO] Headless environment detected. Launching interactive CLI mode...\n");
+            com.railsync.cli.ConsoleApp.start(manager, dataFile);
             return;
         }
 

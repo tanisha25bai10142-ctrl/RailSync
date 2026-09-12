@@ -32,11 +32,12 @@ if not exist data\tickets mkdir data\tickets
 echo [INFO] Compiling Core Java source files...
 dir /s /b src\*.java > sources.txt
 "%JAVAC_CMD%" -encoding UTF-8 -d bin @sources.txt
+set "COMPILE_STATUS=%errorlevel%"
 if exist sources.txt del sources.txt
 
-if %errorlevel% equ 0 (
+if %COMPILE_STATUS% equ 0 (
     echo ================================================================
-    echo [SUCCESS] Compilation finished with 0 errors!
+    echo [SUCCESS] Compilation finished with 0 errors
     echo Classes generated in: bin\
     echo ================================================================
 ) else (
