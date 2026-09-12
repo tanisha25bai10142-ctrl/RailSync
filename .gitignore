@@ -33,4 +33,10 @@ Desktop.ini
 
 # Temporary build artifacts
 sources.txt
-data/test_state.ser
+
+# Generated runtime data
+data/*.ser
+data/*.dat
+data/tickets/*.txt
+!data/.gitkeep
+!data/tickets/.gitkeep

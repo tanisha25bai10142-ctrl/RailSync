@@ -101,8 +101,6 @@ RailSync/
 ├── RailSync.jar               # Executable application JAR
 ├── VIVA_QUESTIONS.md          # Viva preparation reference
 ├── build.bat                  # Windows build script
-├── build_and_run.ps1          # PowerShell build and run script
-├── package.bat                # JAR packaging script
 ├── run.bat                    # Windows run script
 ├── test.bat                   # Automated test script
 ├── data/                      # Directory for serialized state and exported tickets
@@ -212,11 +210,6 @@ del sources.txt
 ```bash
 mkdir -p bin
 javac -encoding UTF-8 -d bin $(find src -name "*.java")
-```
-
-### C. Universal PowerShell
-```powershell
-.\build_and_run.ps1
 ```
 
 ---
