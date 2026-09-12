@@ -1,11 +1,11 @@
-# RailSync – Intelligent Train Reservation & Dynamic Seat Management System
+# RailSync – Train Reservation & Dynamic Seat Management System
 
-[![Java Version](https://img.shields.io/badge/Java-17%2B%20%7C%2025-orange.svg)](https://openjdk.org/)
-[![GUI Framework](https://img.shields.io/badge/GUI-Java%20Swing-blue.svg)]()
-[![Architecture](https://img.shields.io/badge/Architecture-Clean%20OOP%20%2F%20Layered-green.svg)]()
-[![Verification](https://img.shields.io/badge/Tests-15%2F15%20Passed-brightgreen.svg)]()
+![Java Version](https://img.shields.io/badge/Java-17%2B-orange.svg)
+![GUI Framework](https://img.shields.io/badge/GUI-Java%20Swing-blue.svg)
+![Architecture](https://img.shields.io/badge/Architecture-Layered%20OOP-green.svg)
+![Verification](https://img.shields.io/badge/Tests-15%2F15%20Passed-brightgreen.svg)
 
-> A complete Core Java desktop application designed for the **"Programming in Java"** course curriculum. Developed using standard Java libraries without external third-party dependencies, demonstrating fundamental and advanced Core Java concepts: OOP, Collections Framework, Multithreading & Synchronization, Exception Handling, File I/O & Serialization, Generics, Lambdas, and Java Swing GUI design.
+RailSync is a Core Java desktop application that simulates train reservation, seat allocation, RAC/WL management, fare calculation, cancellation, and passenger management. It demonstrates object-oriented programming, collections, exception handling, multithreading, file I/O, serialization, and Java Swing.
 
 ---
 
@@ -15,25 +15,28 @@
 - [Key Objectives](#-key-objectives)
 - [Core Features](#-core-features)
 - [Core Java Concepts Demonstrated](#-core-java-concepts-demonstrated)
-- [Project Architecture & Directory Structure](#-project-architecture--directory-structure)
+- [Project Structure](#-project-structure)
 - [Sample Credentials](#-sample-credentials)
-- [How to Build and Run](#-how-to-build-and-run)
-- [Automated Verification Suite](#-automated-verification-suite)
-- [Step-by-Step Viva & Demo Workflow](#-step-by-step-viva--demo-workflow)
+- [System Requirements & Environment Setup](#️-system-requirements--environment-setup)
+- [Step-by-Step Compilation](#️-step-by-step-compilation)
+- [Command-Line Execution (CLI Mode)](#-command-line-execution-cli-mode)
+- [Graphical User Interface (GUI) Execution](#️-graphical-user-interface-gui-execution)
+- [Automated Verification](#-automated-verification)
+- [Demo Flow](#-demo-flow)
 
 ---
 
 ## 🚆 Project Overview
-**RailSync** is a Java desktop application that simulates a train reservation and dynamic seat management system. It models the core operations of passenger booking: searching trains across routes, calculating distance-based fares with age concessions, allocating confirmed coach berths, managing FIFO queues for **Reservation Against Cancellation (RAC)** and **Waiting List (WL)**, automatically promoting passengers upon cancellations, providing PNR status enquiries, and demonstrating concurrent booking with thread-safe synchronization.
+**RailSync** is a Java desktop application that simulates a train reservation and dynamic seat management system. It models passenger booking operations: searching trains across routes, calculating distance-based fares with age concessions, allocating confirmed coach berths, managing FIFO queues for **Reservation Against Cancellation (RAC)** and **Waiting List (WL)**, automatically promoting passengers upon cancellations, providing PNR status enquiries, and demonstrating concurrent booking with thread-safe synchronization.
 
 ---
 
 ## 🎯 Problem Statement
-Standard classroom projects often treat railway booking as a simple counter decrement. RailSync models the more realistic behavior of a reservation system:
-1. **Dynamic Inventory Allocation**: Transitioning from Confirmed berths to RAC shared seats, and subsequently to Waiting List queues.
-2. **Cancellation Promotion Cascade**: When a confirmed passenger cancels, an RAC passenger is promoted to Confirmed status with a berth assigned, and the first Waiting List passenger moves into RAC.
-3. **Thread Safety & Race Conditions**: Managing simultaneous booking requests on the same train to prevent double-booking.
-4. **Data Persistence**: Preserving object state across application restarts using standard Java serialization and file I/O.
+Standard classroom projects often treat railway booking as a simple counter decrement. This project models key technical challenges in reservation systems:
+1. **Seat Allocation**: Handling confirmed berth assignments and transitioning to RAC and Waiting List queues when capacity is reached.
+2. **Queue Promotion Cascade**: Automatically promoting RAC passengers to confirmed status and Waiting List passengers to RAC upon cancellation.
+3. **Thread Safety**: Managing simultaneous booking requests on the same train to prevent race conditions and duplicate seat allocations.
+4. **Data Persistence**: Preserving application state across sessions using Java serialization and file I/O.
 
 ---
 
@@ -42,7 +45,7 @@ Standard classroom projects often treat railway booking as a simple counter decr
 - To demonstrate **polymorphism and inheritance** via specialized train classes (`RajdhaniExpress`, `VandeBharatExpress`, `ShatabdiExpress`, `SuperfastExpress`, `ExpressTrain`).
 - To employ the **Java Collections Framework** (`HashMap`, `ArrayList`, `HashSet`, `LinkedList`, `PriorityQueue`) based on data structure requirements.
 - To apply **multithreading and synchronization** to avoid race conditions during concurrent bookings.
-- To provide a clean **Java Swing GUI** with separated presentation and business logic layers.
+- To provide a **Java Swing GUI** with separated presentation and business logic layers.
 
 ---
 
@@ -50,27 +53,25 @@ Standard classroom projects often treat railway booking as a simple counter decr
 
 ### 1. User Roles & Access Control
 - **Passenger Role**:
-  - Search trains between 16+ real stations with date and class filters.
+  - Search trains between registered stations with date and class filters.
   - Multi-passenger booking in a single transaction (up to 6 passengers).
   - Dynamic fare calculation with auto-detected senior citizen, child, and infant concessions.
-  - Real-time PNR status enquiry with printable ASCII ticket vouchers.
-  - One-click cancellation with automated refund calculation and promotion updates.
+  - PNR status enquiry with printable ticket summaries.
+  - Cancellation with automated refund calculation and promotion updates.
 - **Admin Role**:
   - Fleet management: add, configure, or decommission trains.
-  - Station management across railway zones.
+  - Station management across railway routes.
   - Live inspection of active RAC and Waiting List queues.
-  - Master booking search across all passenger manifests.
-  - Dynamic analytics dashboard (occupancy rate, revenue, route ranking).
-  - Built-in **Concurrency Stress Lab** to test thread safety.
+  - Master booking search across passenger manifests.
+  - Analytics dashboard (occupancy rate, revenue, route metrics).
+  - Built-in concurrency simulator to test thread synchronization.
 
-### 2. Realistic Dynamic Seat & Queue Management
-- **Coach & Berth Modeling**: Realistic Indian coach configurations (`1A`, `2A`, `3A`, `SL`, `CC`) with lower, middle, upper, side lower, side upper, window, and aisle berth allocations.
-- **Promotion Cascade**:
-  $$\text{Confirmed Cancelled} \xrightarrow{\text{promotes}} \text{RAC Head} \xrightarrow{\text{promotes}} \text{Waiting List Head}$$
+### 2. Seat & Queue Management
+- **Coach & Berth Allocation**: Coach configurations (`1A`, `2A`, `3A`, `SL`, `CC`) with lower, middle, upper, side lower, side upper, window, and aisle berth allocations.
+- **Promotion Cascade**: When a confirmed seat is cancelled, the first RAC passenger is allocated a confirmed berth, and the first Waiting List passenger moves into RAC.
 
-### 3. Concurrency Simulation Lab
-- Interactive simulator spawning 2 to 30 concurrent worker threads competing for the last remaining seats on an isolated test train.
-- Real-time event logging demonstrating thread lock acquisition, millisecond execution latency, and verification of zero duplicate seats.
+### 3. Concurrency Simulation
+- Spawns concurrent worker threads competing for remaining seats on a test train to demonstrate thread synchronization and verify that no duplicate seats are allocated.
 
 ---
 
@@ -80,100 +81,99 @@ Standard classroom projects often treat railway booking as a simple counter decr
 |---|---|
 | **Inheritance & Abstraction** | `Train` abstract class extended by `RajdhaniExpress`, `ShatabdiExpress`, `VandeBharatExpress`, `SuperfastExpress`, and `ExpressTrain`. |
 | **Interfaces & Polymorphism** | `FareCalculator` interface implemented by `DynamicFareCalculator`. Polymorphic train speed, surcharges, and catering attributes. |
-| **Encapsulation & Validation** | Defensive copying, private domain fields, and regex validation in `ValidationUtils` (names, phones, PNRs). |
-| **Collections Framework** | `HashMap` for $O(1)$ PNR & Station lookups; `LinkedList` as `Queue` for FIFO RAC/WL queues; `ArrayList` for dynamic seat rosters; `HashSet` for collision-free PNR generation. |
-| **Multithreading & Locks** | `Thread`, `Runnable`, `CountDownLatch`, and `synchronized` blocks in `ReservationManager` preventing race conditions. |
+| **Encapsulation & Validation** | Defensive copying, private domain fields, and input validation in `ValidationUtils` (names, phones, PNRs). |
+| **Collections Framework** | `HashMap` for PNR and station lookups; `LinkedList` as FIFO queues for RAC and Waiting List; `ArrayList` for seat rosters; `HashSet` for PNR generation. |
+| **Multithreading & Synchronization** | `Thread`, `Runnable`, `CountDownLatch`, and `synchronized` blocks in `ReservationManager` preventing race conditions. |
 | **Custom Exceptions** | Hierarchy under `RailSyncException`: `SeatUnavailableException`, `InvalidPNRException`, `InvalidPassengerException`, `InvalidStationException`, etc. |
-| **File I/O & Serialization** | `ObjectOutputStream` / `ObjectInputStream` for deep state persistence; `BufferedWriter` & `FileWriter` for ticket and audit exports. |
-| **Java Time API** | `LocalDate`, `LocalTime`, `LocalDateTime`, `Duration`, and `DateTimeFormatter` for accurate scheduling and cancellation fee tiers. |
-| **Generics & Lambdas** | Generic repositories, Streams for multi-criteria searching, and `Comparator` lambdas for train sorting. |
+| **File I/O & Serialization** | `ObjectOutputStream` / `ObjectInputStream` for state persistence; `BufferedWriter` & `FileWriter` for ticket and audit exports. |
+| **Java Time API** | `LocalDate`, `LocalTime`, `LocalDateTime`, `Duration`, and `DateTimeFormatter` for scheduling and cancellation refund tiers. |
+| **Generics & Lambdas** | Generic collections, Streams for criteria searching, and `Comparator` lambdas for train sorting. |
 
 ---
 
-## 📂 Project Architecture & Directory Structure
+## 📂 Project Structure
 
 ```
 RailSync/
-├── build.bat                  # One-click Windows CMD compilation script
-├── run.bat                    # One-click Windows CMD application launcher
-├── test.bat                   # Runs 15-scenario automated verification suite
-├── package.bat                # Packages application into runnable RailSync.jar
-├── build_and_run.ps1          # Universal PowerShell build and launch script
-├── RailSync.jar               # Pre-packaged runnable distribution JAR
-├── README.md                  # Project overview and instructions
-├── PROJECT_REPORT.md          # 18-Section comprehensive academic submission report
-├── VIVA_QUESTIONS.md          # 40+ In-depth viva questions and detailed answers
-├── bin/                       # Compiled bytecode (.class files)
-├── data/                      # Persistent state storage
-│   ├── railsync_data.ser      # Serialized Java object graph
-│   └── tickets/               # Exported electronic tickets (.txt)
+├── .gitignore
+├── PROJECT_REPORT.md          # Course project report
+├── README.md                  # Project documentation
+├── RailSync.jar               # Executable application JAR
+├── VIVA_QUESTIONS.md          # Viva preparation reference
+├── build.bat                  # Windows build script
+├── build_and_run.ps1          # PowerShell build and run script
+├── package.bat                # JAR packaging script
+├── run.bat                    # Windows run script
+├── test.bat                   # Automated test script
+├── data/                      # Directory for serialized state and exported tickets
 └── src/
     └── com/
         └── railsync/
-            ├── Main.java                 # Bootstrap entry point (GUI / CLI)
-            ├── TestRunner.java           # Automated 15-scenario test runner
-            ├── model/                    # Domain entities
-            │   ├── Station.java
-            │   ├── SeatClass.java
-            │   ├── BerthType.java
-            │   ├── Seat.java
-            │   ├── Coach.java
-            │   ├── Train.java            # Abstract base class
-            │   ├── RajdhaniExpress.java
-            │   ├── ShatabdiExpress.java
-            │   ├── VandeBharatExpress.java
-            │   ├── SuperfastExpress.java
-            │   ├── ExpressTrain.java
-            │   ├── Passenger.java
-            │   ├── BookingStatus.java
-            │   ├── Ticket.java
-            │   ├── Booking.java
-            │   ├── RefundReceipt.java
-            │   └── User.java
-            ├── service/                  # Business services
-            │   ├── FareCalculator.java
-            │   ├── DynamicFareCalculator.java
-            │   ├── SearchService.java
-            │   ├── AnalyticsService.java
-            │   └── ReportGenerator.java
-            ├── manager/                  # State & queue orchestrators
-            │   ├── ReservationManager.java
-            │   ├── WaitingListManager.java
-            │   └── FileManager.java
+            ├── Main.java                 # Application entry point
+            ├── TestRunner.java           # 15-scenario verification runner
+            ├── cli/
+            │   └── ConsoleApp.java       # Interactive terminal application
             ├── exception/                # Custom exception hierarchy
-            │   ├── RailSyncException.java
-            │   ├── InvalidPassengerException.java
-            │   ├── InvalidTrainException.java
-            │   ├── TrainNotFoundException.java
-            │   ├── SeatUnavailableException.java
+            │   ├── CancellationNotAllowedException.java
+            │   ├── DuplicateBookingException.java
             │   ├── InvalidBookingException.java
             │   ├── InvalidPNRException.java
-            │   ├── DuplicateBookingException.java
+            │   ├── InvalidPassengerException.java
             │   ├── InvalidStationException.java
-            │   └── CancellationNotAllowedException.java
-            ├── util/                     # Utilities & Seed Data
-            │   ├── PNRGenerator.java
-            │   ├── ValidationUtils.java
-            │   └── SampleDataSeeder.java
+            │   ├── InvalidTrainException.java
+            │   ├── RailSyncException.java
+            │   ├── SeatUnavailableException.java
+            │   └── TrainNotFoundException.java
+            ├── gui/                      # Java Swing user interface
+            │   ├── AdminPanel.java
+            │   ├── ConcurrencySimulationPanel.java
+            │   ├── LoginDialog.java
+            │   ├── ModernTheme.java
+            │   ├── PassengerPanel.java
+            │   └── RailSyncGUI.java
+            ├── manager/                  # Domain state & queue management
+            │   ├── FileManager.java
+            │   ├── ReservationManager.java
+            │   └── WaitingListManager.java
+            ├── model/                    # Domain model entities
+            │   ├── BerthType.java
+            │   ├── Booking.java
+            │   ├── BookingStatus.java
+            │   ├── Coach.java
+            │   ├── ExpressTrain.java
+            │   ├── Passenger.java
+            │   ├── RajdhaniExpress.java
+            │   ├── RefundReceipt.java
+            │   ├── Seat.java
+            │   ├── SeatClass.java
+            │   ├── ShatabdiExpress.java
+            │   ├── Station.java
+            │   ├── SuperfastExpress.java
+            │   ├── Ticket.java
+            │   ├── Train.java
+            │   ├── User.java
+            │   └── VandeBharatExpress.java
+            ├── service/                  # Business services
+            │   ├── AnalyticsService.java
+            │   ├── DynamicFareCalculator.java
+            │   ├── FareCalculator.java
+            │   ├── ReportGenerator.java
+            │   └── SearchService.java
             ├── thread/                   # Concurrency simulation
             │   ├── BookingTask.java
             │   └── ConcurrencySimulation.java
-            ├── cli/                      # Command-Line Console Interface
-            │   └── ConsoleApp.java       # Interactive terminal reservation application
-            └── gui/                      # Presentation layer (Swing)
-                ├── ModernTheme.java
-                ├── LoginDialog.java
-                ├── PassengerPanel.java
-                ├── AdminPanel.java
-                ├── ConcurrencySimulationPanel.java
-                └── RailSyncGUI.java
+            └── util/                     # Validation, PNR generator, seed data
+                ├── PNRGenerator.java
+                ├── SampleDataSeeder.java
+                └── ValidationUtils.java
 ```
+*(Note: The `bin/` directory containing compiled bytecode and runtime state files in `data/` are generated during build and execution).*
 
 ---
 
 ## 🔑 Sample Credentials
 
-The application is pre-seeded with sample users. You can authenticate via the dialog or click the **1-Click Demo Buttons**:
+The application is pre-seeded with sample users. You can authenticate via the login dialog or use the demo buttons:
 
 | Role | Username | Password | Full Name / Access Level |
 |---|---|---|---|
@@ -185,10 +185,10 @@ The application is pre-seeded with sample users. You can authenticate via the di
 
 ## ⚙️ System Requirements & Environment Setup
 
-- **Java Runtime / Compiler**: JDK 17 or newer (tested on Java 17, 21, and 25).
-- **Dependencies**: **Zero** external third-party dependencies. Built 100% on standard Java SE packages (`java.time`, `java.util`, `java.io`, `java.util.concurrent`, `javax.swing`).
-- **Operating System**: Cross-platform (Windows, Linux, macOS).
-- **Configuration**: No database setup or external configuration needed. Data is persisted automatically in `data/railsync_data.ser` via Java Object Serialization.
+- **Java**: JDK 17 or newer; verified with OpenJDK 25.
+- **Dependencies**: Zero external dependencies (uses standard Java library: `java.time`, `java.util`, `java.io`, `java.util.concurrent`, `javax.swing`).
+- **Operating System**: Windows, Linux, or macOS.
+- **Configuration**: None required. State is persisted in `data/` using standard Java serialization.
 
 ---
 
@@ -221,7 +221,7 @@ javac -encoding UTF-8 -d bin $(find src -name "*.java")
 
 ---
 
-## 💻 Step-by-Step Command-Line Execution (CLI Mode)
+## 💻 Command-Line Execution (CLI Mode)
 
 The project includes an interactive terminal-based console application (`ConsoleApp`) that executes directly in the terminal without opening a graphical window.
 
@@ -268,9 +268,9 @@ Enter your choice (1-9):
 ```
 
 ### Example Booking Flow in CLI:
-1. Choose option **`3`** (Book Train Ticket).
+1. Choose option `3` (Book Train Ticket).
 2. Enter Train Number: `12952` (Mumbai Rajdhani).
-3. Press **Enter** to select the default date (tomorrow).
+3. Press Enter to select the default date.
 4. Select Class: `1` for AC First Class (`1A`).
 5. Enter number of passengers: `1`.
 6. Enter details: `Rajesh Kumar`, Age `35`, Gender `M`, Phone `9876543210`, Berth `1` (Lower).
@@ -307,7 +307,6 @@ run.bat
 ```bash
 java -jar RailSync.jar
 ```
-*(Or double-click `RailSync.jar` on Windows/macOS).*
 
 #### Option 3: Direct Class Execution
 ```bash
@@ -316,80 +315,23 @@ java -cp bin com.railsync.Main
 
 ---
 
-## 🧪 Test Execution Instructions
+## 🧪 Automated Verification
 
-RailSync includes a standalone 15-scenario verification test harness testing all reservation rules, promotions, thread safety, and persistence:
+RailSync includes an automated test harness (`TestRunner.java`) verifying core booking rules, queue transitions, thread safety, and persistence without launching the GUI.
 
-#### Option 1: One-Click Batch Script (Windows)
-```cmd
-test.bat
-```
+**Result: 15 passed, 0 failed.**
 
-#### Option 2: Direct Test Runner Execution
-```bash
-java -cp bin com.railsync.TestRunner
-```
-
-#### Option 3: Via Executable JAR
-```bash
-java -jar RailSync.jar --test
-```
+### How to Run Tests:
+- **Windows Batch**: `test.bat`
+- **Command Line**: `java -cp bin com.railsync.TestRunner`
+- **Via JAR**: `java -jar RailSync.jar --test`
 
 ---
 
-## 🧪 Automated Verification Suite
+## 🎬 Demo Flow
 
-RailSync includes a standalone automated test harness (`TestRunner.java`) verifying all core business logic without opening the GUI:
-
-```
-==========================================================================
-            RAILSYNC AUTOMATED CORE JAVA VERIFICATION SUITE               
-==========================================================================
-
-1. Successful Booking Allocation                                 : [PASS]
-2. Booking When Confirmed Full -> Automatic RAC                  : [PASS]
-3. RAC Allocation Tracking                                       : [PASS]
-4. Waiting List Allocation When RAC Full                         : [PASS]
-5. Ticket Cancellation and Refund Receipt                        : [PASS]
-6. Automatic RAC to Confirmed Promotion Cascade                  : [PASS]
-7. Automatic Waiting-List to RAC Promotion Cascade               : [PASS]
-8. Invalid Passenger Input Validation                            : [PASS]
-9. Invalid PNR Exception Handling                                : [PASS]
-10. Concurrent Booking Simulation & Race Condition Prevention    : [PASS]
-11. System State Serialization (Saving)                          : [PASS]
-12. System State Deserialization (Loading)                       : [PASS]
-13. Dynamic Fare Calculation & Concession Discounts              : [PASS]
-14. Train Search, Route Filtering & Custom Comparators           : [PASS]
-15. Real-Time Dynamic Administrative Analytics                   : [PASS]
-
-==========================================================================
- VERIFICATION COMPLETE: 15 PASSED, 0 FAILED (TOTAL 15)
-==========================================================================
-```
-
----
-
-## 🎬 Step-by-Step Viva & Demo Workflow (10 Minutes)
-
-1. **Launch App**: Execute `run.bat`. The authentication dialog appears.
-2. **Click "Passenger Demo"**: Log in instantly as *Rahul Sharma*.
-3. **Search Trains**: Notice New Delhi (`NDLS`) to Mumbai Central (`BCT`). Click **"Search Trains"**.
-4. **Book Multi-Passenger Ticket**:
-   - Add two passengers: an adult (30 yrs) and a senior citizen (65 yrs).
-   - Observe automatic 40% senior citizen concession and live fare preview calculation.
-   - Click **"Confirm & Book Ticket"**. A unique PNR is generated (e.g. `RS507054`).
-5. **Enquire PNR**: Switch to the **PNR Status Enquiry** tab. View the full ASCII Electronic Reservation Slip and click **"Export Ticket to File"**.
-6. **Cancel Ticket & Verify Promotion**:
-   - Navigate to **My Bookings & Cancellation**.
-   - Select a ticket and click **"Cancel Selected Passenger Ticket"**.
-   - Notice the refund breakdown receipt dialog and the message indicating that an RAC passenger was automatically promoted to Confirmed status!
-7. **Switch to Admin View**:
-   - Click **"Switch Role"** in the top-right banner.
-   - Click **"Admin Demo"**.
-8. **Inspect Queues & Analytics**:
-   - In **RAC & Waiting List Monitors**, inspect the live queue positions.
-   - In **Executive Analytics & Financials**, observe dynamic occupancy percentage, gross revenue, and class breakdown. Click **"Export Official Railway Audit Report"**.
-9. **Run Concurrency Simulation Lab**:
-   - Switch to the **Concurrency Stress Lab** tab.
-   - Set simultaneous threads to `10` and click **"Launch Simulation"**.
-   - Watch real-time terminal output showing thread locks, seat allocations, and the green verdict: **"PASSED: 100% THREAD-SAFE (0 RACE CONDITIONS)"**.
+1. **Launch the Application**: Start the GUI via `run.bat` (or `java -jar RailSync.jar`). The authentication dialog appears.
+2. **Passenger Search & Booking**: Log in using the Passenger Demo button. Search trains between stations (e.g. `NDLS` to `BCT`), choose a class, enter passenger details, and confirm booking to generate a PNR.
+3. **PNR Status & Ticket Export**: Open the PNR Status tab to view booking details, berth allocation, and optionally export the ticket to a text file.
+4. **Cancellation & Cascade Promotion**: Cancel a ticket under My Bookings to view the calculated refund receipt and observe the automatic promotion of an RAC passenger to confirmed status.
+5. **Admin Inspection & Concurrency**: Switch to the Admin role to inspect queue depths and system analytics. Open the Concurrency Stress Lab and run concurrent booking threads to verify thread-safe seat allocation; the concurrency test completes with no duplicate seat allocations.
