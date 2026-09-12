@@ -1,0 +1,35 @@
+# Compiled Java class files
+bin/
+target/
+build/
+*.class
+
+# Log files and crash dumps
+*.log
+hs_err_pid*
+replay_pid*
+
+# Package and Archive Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+
+# IDE and Editor Specific Files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.nb-gradle/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary build artifacts
+sources.txt
+data/test_state.ser
