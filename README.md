@@ -5,7 +5,7 @@
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20OOP%20%2F%20Layered-green.svg)]()
 [![Verification](https://img.shields.io/badge/Tests-15%2F15%20Passed-brightgreen.svg)]()
 
-> A comprehensive, industrial-grade, and 100% pure Core Java desktop application designed for the **"Programming in Java"** course curriculum. Developed strictly without web frameworks or external third-party dependencies, demonstrating advanced Core Java concepts: OOP, Collections Framework, Multithreading & Synchronization, Exception Handling, File I/O & Serialization, Generics, Lambdas, and Modern Swing GUI design.
+> A complete Core Java desktop application designed for the **"Programming in Java"** course curriculum. Developed using standard Java libraries without external third-party dependencies, demonstrating fundamental and advanced Core Java concepts: OOP, Collections Framework, Multithreading & Synchronization, Exception Handling, File I/O & Serialization, Generics, Lambdas, and Java Swing GUI design.
 
 ---
 
@@ -97,7 +97,9 @@ RailSync/
 ├── build.bat                  # One-click Windows CMD compilation script
 ├── run.bat                    # One-click Windows CMD application launcher
 ├── test.bat                   # Runs 15-scenario automated verification suite
+├── package.bat                # Packages application into runnable RailSync.jar
 ├── build_and_run.ps1          # Universal PowerShell build and launch script
+├── RailSync.jar               # Pre-packaged runnable distribution JAR
 ├── README.md                  # Project overview and instructions
 ├── PROJECT_REPORT.md          # 18-Section comprehensive academic submission report
 ├── VIVA_QUESTIONS.md          # 40+ In-depth viva questions and detailed answers
@@ -200,8 +202,20 @@ The application is pre-seeded with sample users. You can authenticate via the di
    ```cmd
    test.bat
    ```
+4. **Package and Run Standalone Executable JAR**:
+   ```cmd
+   package.bat
+   java -jar RailSync.jar
+   ```
 
-#### Option 2: PowerShell Script
+#### Option 2: Running the Pre-Packaged Runnable JAR Directly
+If you already have Java 17+ installed on any platform (Windows, macOS, Linux):
+```bash
+java -jar RailSync.jar
+```
+*(Or double-click `RailSync.jar` on Windows).*
+
+#### Option 3: PowerShell Script
 ```powershell
 # Run the GUI application
 .\build_and_run.ps1

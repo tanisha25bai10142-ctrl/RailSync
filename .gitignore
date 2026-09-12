@@ -11,6 +11,7 @@ replay_pid*
 
 # Package and Archive Files
 *.jar
+!RailSync.jar
 *.war
 *.ear
 *.zip
