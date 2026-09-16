@@ -3,8 +3,7 @@ package com.railsync.model;
 import java.time.LocalTime;
 
 /**
- * Premium overnight high-speed train connecting national capital.
- * Demonstrates inheritance and method overriding.
+ * Premium overnight express train connecting the capital.
  */
 public class RajdhaniExpress extends Train {
     private static final long serialVersionUID = 1L;

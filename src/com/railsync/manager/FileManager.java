@@ -9,12 +9,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Handles File I/O, persistence, and state serialization.
- * Demonstrates:
- * - Java Serialization (ObjectOutputStream, ObjectInputStream)
- * - Java Character Streams (BufferedWriter, FileWriter, BufferedReader, FileReader)
- * - Clean exception handling with try-with-resources
- * - Deep object graph persistence
+ * Handles saving and loading system state using Java serialization and file I/O.
  */
 public class FileManager {
 

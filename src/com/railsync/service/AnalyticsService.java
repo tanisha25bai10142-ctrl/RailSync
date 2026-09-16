@@ -10,8 +10,7 @@ import com.railsync.model.Train;
 import java.util.*;
 
 /**
- * Computes administrative intelligence and financial analytics dynamically from stored data.
- * Demonstrates Collections, Stream operations, Maps, and dynamic aggregations.
+ * Provides summary statistics and administrative reports from stored trains and bookings.
  */
 public class AnalyticsService {
 

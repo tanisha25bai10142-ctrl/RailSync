@@ -17,8 +17,8 @@ import java.util.Map;
 import java.util.Queue;
 
 /**
- * Administrative operations console providing fleet management, global booking manifests,
- * live RAC/Waiting List queue monitors, dynamic business analytics, and report generators.
+ * Admin panel for viewing statistics, managing bookings, inspecting RAC/WL queues,
+ * and managing trains.
  */
 public class AdminPanel extends JPanel {
 
@@ -65,11 +65,11 @@ public class AdminPanel extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.setFont(ModernTheme.FONT_SUBHEADER);
 
-        tabbedPane.addTab("Executive Analytics & Financials", createAnalyticsTab());
-        tabbedPane.addTab("Master Bookings & Passenger Search", createMasterBookingsTab());
-        tabbedPane.addTab("RAC & Waiting List Monitors", createQueueMonitorTab());
-        tabbedPane.addTab("Fleet & Route Management", createFleetManagementTab());
-        tabbedPane.addTab("Concurrency Stress Lab", new ConcurrencySimulationPanel());
+        tabbedPane.addTab("Overview & Statistics", createAnalyticsTab());
+        tabbedPane.addTab("Bookings & Search", createMasterBookingsTab());
+        tabbedPane.addTab("RAC & Waiting List Queues", createQueueMonitorTab());
+        tabbedPane.addTab("Train Management", createFleetManagementTab());
+        tabbedPane.addTab("Multithreading Simulation", new ConcurrencySimulationPanel());
 
         tabbedPane.addChangeListener(e -> refreshAllData());
         add(tabbedPane, BorderLayout.CENTER);
@@ -142,7 +142,7 @@ public class AdminPanel extends JPanel {
         JPanel reportCard = ModernTheme.createCardPanel();
         reportCard.setLayout(new BoxLayout(reportCard, BoxLayout.Y_AXIS));
 
-        JLabel lblRepTitle = new JLabel("NETWORK HIGHLIGHTS & AUDIT");
+        JLabel lblRepTitle = new JLabel("SYSTEM HIGHLIGHTS");
         lblRepTitle.setFont(ModernTheme.FONT_SUBHEADER);
         lblRepTitle.setForeground(ModernTheme.PRIMARY);
         lblRepTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -161,7 +161,7 @@ public class AdminPanel extends JPanel {
         reportCard.add(lblMetricPopularRoute);
         reportCard.add(Box.createVerticalStrut(24));
 
-        JButton btnExportAudit = ModernTheme.createAccentButton("Export Official Railway Audit Report (.txt)");
+        JButton btnExportAudit = ModernTheme.createAccentButton("Export Summary Report (.txt)");
         btnExportAudit.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnExportAudit.addActionListener(e -> exportAdminReport());
         reportCard.add(btnExportAudit);
@@ -218,7 +218,7 @@ public class AdminPanel extends JPanel {
     private void exportAdminReport() {
         try {
             String report = ReportGenerator.generateAdminReport(analyticsService);
-            File dest = new File("data/Railway_Executive_Audit_Report.txt");
+            File dest = new File("data/Railway_Summary_Report.txt");
             com.railsync.manager.FileManager.writeTextFile(report, dest);
 
             JTextArea area = new JTextArea(report);
@@ -227,7 +227,7 @@ public class AdminPanel extends JPanel {
             JScrollPane sp = new JScrollPane(area);
             sp.setPreferredSize(new Dimension(650, 420));
 
-            JOptionPane.showMessageDialog(this, sp, "Audit Report Exported to " + dest.getName(), JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, sp, "Summary Report Exported to " + dest.getName(), JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Failed to export report: " + ex.getMessage(), "Export Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -442,7 +442,7 @@ public class AdminPanel extends JPanel {
         JButton btnUpdateRate = ModernTheme.createSecondaryButton("Configure Base Fare Rate");
         btnUpdateRate.addActionListener(e -> showUpdateRateDialog());
 
-        JButton btnRemoveTrain = ModernTheme.createDangerButton("Decommission Train");
+        JButton btnRemoveTrain = ModernTheme.createDangerButton("Remove Train");
         btnRemoveTrain.addActionListener(e -> executeRemoveTrain());
 
         topBar.add(btnAddTrain);
@@ -507,7 +507,7 @@ public class AdminPanel extends JPanel {
                 "Distance (km):", txtDist
         };
 
-        int res = JOptionPane.showConfirmDialog(this, fields, "Add New Superfast Train", JOptionPane.OK_CANCEL_OPTION);
+        int res = JOptionPane.showConfirmDialog(this, fields, "Add New Train", JOptionPane.OK_CANCEL_OPTION);
         if (res == JOptionPane.OK_OPTION) {
             try {
                 Station s1 = (Station) cbSrc.getSelectedItem();
@@ -566,12 +566,12 @@ public class AdminPanel extends JPanel {
     private void executeRemoveTrain() {
         int sel = trainTable.getSelectedRow();
         if (sel < 0) {
-            JOptionPane.showMessageDialog(this, "Select a train to decommission.");
+            JOptionPane.showMessageDialog(this, "Select a train to remove.");
             return;
         }
         String trainNo = String.valueOf(trainTable.getValueAt(sel, 0));
-        int c = JOptionPane.showConfirmDialog(this, "Are you sure you want to decommission train " + trainNo + "?",
-                "Confirm Decommission", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        int c = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove train " + trainNo + "?",
+                "Confirm Remove", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (c == JOptionPane.YES_OPTION) {
             manager.removeTrain(trainNo);
             refreshFleetTable();

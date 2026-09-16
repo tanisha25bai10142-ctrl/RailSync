@@ -7,9 +7,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * Interactive Concurrency Simulation Lab GUI.
- * Allows administrators and evaluators to trigger real-time multithreaded booking races,
- * observe synchronization locks, and verify the prevention of duplicate seat allocations.
+ * Panel for demonstrating multithreaded ticket booking.
+ * Allows running multiple concurrent booking threads to verify synchronized seat allocation.
  */
 public class ConcurrencySimulationPanel extends JPanel {
 
@@ -34,7 +33,7 @@ public class ConcurrencySimulationPanel extends JPanel {
         JPanel leftControls = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 4));
         leftControls.setOpaque(false);
 
-        JLabel lblTitle = new JLabel("Multithreaded Concurrent Booking Stress Test");
+        JLabel lblTitle = new JLabel("Multithreaded Booking Simulation");
         lblTitle.setFont(ModernTheme.FONT_SUBHEADER);
         lblTitle.setForeground(ModernTheme.PRIMARY);
 
@@ -45,7 +44,7 @@ public class ConcurrencySimulationPanel extends JPanel {
         spinThreads.setFont(ModernTheme.FONT_BODY);
         ((JSpinner.DefaultEditor) spinThreads.getEditor()).getTextField().setColumns(3);
 
-        btnRun = ModernTheme.createAccentButton("▶ Launch Simulation");
+        btnRun = ModernTheme.createAccentButton("▶ Run Simulation");
         btnRun.addActionListener(e -> startSimulationWorker());
 
         JButton btnClear = ModernTheme.createSecondaryButton("Clear Console");
@@ -61,8 +60,8 @@ public class ConcurrencySimulationPanel extends JPanel {
         headerCard.add(leftControls, BorderLayout.NORTH);
 
         // Subheader Explanation Banner
-        JLabel lblExplain = new JLabel("<html><i>Simulates high-concurrency surge traffic where multiple passengers attempt to acquire " +
-                "the very last remaining confirmed seats simultaneously. Proves mutual exclusion via <b>synchronized</b> blocks.</i></html>");
+        JLabel lblExplain = new JLabel("<html><i>Simulates multiple passenger threads booking tickets simultaneously to demonstrate " +
+                "thread synchronization and safe seat allocation.</i></html>");
         lblExplain.setFont(ModernTheme.FONT_SMALL);
         lblExplain.setForeground(ModernTheme.TEXT_MUTED);
         headerCard.add(lblExplain, BorderLayout.SOUTH);
@@ -73,7 +72,7 @@ public class ConcurrencySimulationPanel extends JPanel {
         JPanel consoleCard = ModernTheme.createCardPanel();
         consoleCard.setLayout(new BorderLayout(0, 8));
 
-        JLabel lblConsole = new JLabel("REAL-TIME THREAD EXECUTION LOGS & LOCK ACQUISITIONS");
+        JLabel lblConsole = new JLabel("THREAD EXECUTION LOGS");
         lblConsole.setFont(ModernTheme.FONT_SMALL);
         lblConsole.setForeground(ModernTheme.TEXT_MUTED);
         consoleCard.add(lblConsole, BorderLayout.NORTH);
@@ -84,7 +83,7 @@ public class ConcurrencySimulationPanel extends JPanel {
         txtLogs.setBackground(ModernTheme.BG_DARK);
         txtLogs.setForeground(new Color(148, 163, 184)); // Slate 400
         txtLogs.setCaretColor(Color.WHITE);
-        txtLogs.setText("Ready to initiate concurrency test. Select thread count and click 'Launch Simulation'.\n");
+        txtLogs.setText("Select number of threads and click 'Run Simulation'.\n");
 
         JScrollPane scroll = new JScrollPane(txtLogs);
         scroll.setBorder(null);
@@ -136,16 +135,16 @@ public class ConcurrencySimulationPanel extends JPanel {
                 try {
                     ConcurrencySimulation.SimulationResult res = get();
                     btnRun.setEnabled(true);
-                    lblStats.setText(String.format("Result: %d Threads | %d Confirmed | %d RAC | %d WL | %d Regret",
+                    lblStats.setText(String.format("Result: %d Threads | %d Confirmed | %d RAC | %d WL | %d Exhausted",
                             res.totalThreads, res.confirmedAllocations, res.racAllocations,
                             res.waitingListAllocations, res.failedAttempts));
 
                     if (res.zeroDuplicateSeats) {
-                        lblVerdictBadge.setText("PASSED: 100% THREAD-SAFE (0 RACE CONDITIONS)");
+                        lblVerdictBadge.setText("PASSED: Thread-Safe (No Duplicates)");
                         lblVerdictBadge.setBackground(ModernTheme.SUCCESS);
                         lblVerdictBadge.setForeground(Color.WHITE);
                     } else {
-                        lblVerdictBadge.setText("FAILED: DUPLICATE SEATS ALLOCATED");
+                        lblVerdictBadge.setText("FAILED: Duplicate Seats Found");
                         lblVerdictBadge.setBackground(ModernTheme.DANGER);
                         lblVerdictBadge.setForeground(Color.WHITE);
                     }

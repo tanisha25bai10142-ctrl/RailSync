@@ -6,12 +6,8 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Manages FIFO queues for Reservation Against Cancellation (RAC) and Waiting List (WL).
- * Implements the automatic promotion cascade upon passenger cancellation:
- * 1. Confirmed cancelled -> RAC head promoted to Confirmed (assigned freed seat).
- * 2. RAC vacated -> Waiting List head promoted to RAC.
- * 3. All queue positions dynamically re-indexed.
- * Demonstrates Collections (LinkedList as Queue), FIFO discipline, and State Synchronization.
+ * Manages FIFO queues for Reservation Against Cancellation (RAC) and Waiting List (WL),
+ * including automatic promotion when tickets are cancelled.
  */
 public class WaitingListManager implements Serializable {
     private static final long serialVersionUID = 1L;

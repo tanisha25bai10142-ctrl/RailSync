@@ -6,9 +6,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 /**
- * Abstract Base Class for Railway Trains.
- * Demonstrates Abstraction, Inheritance, Encapsulation, Composition,
- * and standard Java interfaces (Comparable, Serializable).
+ * Abstract base class representing a train in the reservation system.
  */
 public abstract class Train implements Serializable, Comparable<Train> {
     private static final long serialVersionUID = 1L;
@@ -51,7 +49,7 @@ public abstract class Train implements Serializable, Comparable<Train> {
         this.intermediateStations = new ArrayList<>();
     }
 
-    // ================= Abstract Methods (Polymorphism) =================
+    // Abstract methods implemented by specific train types
     public abstract String getTrainType();
     public abstract double getSurcharge();
     public abstract double getSpeedKmph();

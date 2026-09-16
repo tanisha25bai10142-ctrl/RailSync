@@ -3,9 +3,7 @@ package com.railsync.model;
 import java.io.Serializable;
 
 /**
- * Enumerates train travel classes with distinct fare multipliers,
- * seat configurations, and codes.
- * Demonstrates enum with fields, constructors, and methods in Core Java.
+ * Enumerates train travel classes with fare multipliers and reservation fees.
  */
 public enum SeatClass implements Serializable {
     FIRST_AC("1A", "AC First Class (1A)", 3.50, 60.0),

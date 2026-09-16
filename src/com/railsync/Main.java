@@ -25,12 +25,12 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("==================================================================");
-        System.out.println("  RailSync – Intelligent Train Reservation & Dynamic Seat System   ");
+        System.out.println("  RailSync – Train Reservation System                             ");
         System.out.println("  Core Java Academic Project | Java 17+                            ");
         System.out.println("==================================================================");
 
         if (args.length > 0 && "--test".equalsIgnoreCase(args[0])) {
-            System.out.println("Executing RailSync Automated Verification Test Suite...\n");
+            System.out.println("Executing RailSync Automated Test Suite...\n");
             TestRunner.main(args);
             return;
         }

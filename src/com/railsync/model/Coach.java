@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a Railway coach containing structured seats and managing local capacity.
- * Demonstrates Collections (ArrayList), encapsulation, and composition.
+ * Represents a train coach containing seats and managing seat capacity.
  */
 public class Coach implements Serializable {
     private static final long serialVersionUID = 1L;

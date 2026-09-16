@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents a Railway Station on a route.
- * Demonstrates encapsulation, Serializable for file persistence,
- * and Comparable for natural alphabetical ordering.
+ * Represents a railway station along a train route.
  */
 public class Station implements Serializable, Comparable<Station> {
     private static final long serialVersionUID = 1L;

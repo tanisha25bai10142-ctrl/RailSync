@@ -8,9 +8,7 @@ import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 /**
- * Provides static validation methods for railway operations.
- * Demonstrates String processing, Regular Expressions (java.util.regex),
- * and custom exception throwing.
+ * Helper methods for validating passenger details, phone numbers, and station inputs.
  */
 public final class ValidationUtils {
 

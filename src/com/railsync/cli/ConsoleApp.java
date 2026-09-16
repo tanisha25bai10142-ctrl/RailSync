@@ -13,13 +13,8 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**
- * Interactive Command-Line Interface (CLI) for RailSync.
- * Demonstrates:
- * - Pure terminal execution without requiring an IDE or GUI environment.
- * - Train searching and route filtering using existing services.
- * - Passenger registration and dynamic seat booking (Confirmed, RAC, WL).
- * - PNR status inquiry and ticket cancellation with automatic promotion cascade.
- * - Dynamic fare computation with age-based concessions.
+ * Interactive Command-Line Interface (CLI) for the RailSync system.
+ * Allows searching trains, booking tickets, checking PNR status, and cancelling bookings.
  */
 public class ConsoleApp {
 

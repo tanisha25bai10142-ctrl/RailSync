@@ -32,7 +32,7 @@ public class RailSyncGUI extends JFrame {
     private JLabel lblStatusTime;
 
     public RailSyncGUI(ReservationManager manager, File dataFile) {
-        super("RailSync – Intelligent Train Reservation & Dynamic Seat Management System");
+        super("RailSync – Train Reservation System");
         this.manager = manager;
         this.dataFile = dataFile;
 
@@ -63,7 +63,7 @@ public class RailSyncGUI extends JFrame {
         JMenu menuFile = new JMenu("File");
         JMenuItem itemSave = new JMenuItem("Save System State (.ser)");
         itemSave.addActionListener(e -> saveState());
-        JMenuItem itemExportReport = new JMenuItem("Export Executive Audit Report (.txt)");
+        JMenuItem itemExportReport = new JMenuItem("Export Summary Report (.txt)");
         itemExportReport.addActionListener(e -> adminPanel.refreshAllData());
         JMenuItem itemExit = new JMenuItem("Exit");
         itemExit.addActionListener(e -> {
@@ -86,7 +86,7 @@ public class RailSyncGUI extends JFrame {
 
         // Tools Menu
         JMenu menuTools = new JMenu("Tools");
-        JMenuItem itemSim = new JMenuItem("Open Concurrency Stress Lab");
+        JMenuItem itemSim = new JMenuItem("Open Multithreaded Booking Simulation");
         itemSim.addActionListener(e -> {
             switchRole(true); // Switch to admin view where simulation lab is located
         });
@@ -122,11 +122,11 @@ public class RailSyncGUI extends JFrame {
 
         JPanel textStack = new JPanel(new GridLayout(2, 1, 0, 2));
         textStack.setOpaque(false);
-        JLabel lblTitle = new JLabel("RailSync Systems");
+        JLabel lblTitle = new JLabel("RailSync");
         lblTitle.setFont(ModernTheme.FONT_HEADER);
         lblTitle.setForeground(Color.WHITE);
 
-        JLabel lblSub = new JLabel("Intelligent Train Reservation & Dynamic Seat Management");
+        JLabel lblSub = new JLabel("Train Reservation System");
         lblSub.setFont(ModernTheme.FONT_SMALL);
         lblSub.setForeground(new Color(203, 213, 225)); // Slate 300
 
@@ -174,7 +174,7 @@ public class RailSyncGUI extends JFrame {
         statusBar.setBackground(new Color(241, 245, 249));
         statusBar.setBorder(new EmptyBorder(6, 16, 6, 16));
 
-        JLabel lblSystemStatus = new JLabel("RailSync Core Java Engine | Ready | Thread-Safe Concurrency Active");
+        JLabel lblSystemStatus = new JLabel("RailSync | Ready");
         lblSystemStatus.setFont(ModernTheme.FONT_SMALL);
         lblSystemStatus.setForeground(ModernTheme.TEXT_MUTED);
 
@@ -245,15 +245,15 @@ public class RailSyncGUI extends JFrame {
     }
 
     private void showAboutDialog() {
-        String info = "RailSync – Intelligent Train Reservation & Dynamic Seat Management System\n" +
-                "Version 1.0.0 (Core Java Academic Release)\n\n" +
-                "Architecture Highlights:\n" +
-                "• Strict Core Java 17+ implementation with Zero External Frameworks\n" +
-                "• Deep OOP Hierarchy (Abstract Train, Polymorphic Subclasses, Composition)\n" +
-                "• Dynamic RAC & Waiting List Automatic Promotion Cascade\n" +
-                "• Thread-Safe Concurrent Seat Allocation Simulation\n" +
-                "• Java Serialization & Character Stream I/O\n" +
-                "• Modern Swing GUI with Presentation/Logic Separation";
+        String info = "RailSync – Train Reservation System\n" +
+                "Programming in Java Course Project\n\n" +
+                "Key Features:\n" +
+                "• Train search and seat reservation\n" +
+                "• Confirmed, RAC, and Waiting List booking cascade\n" +
+                "• Ticket cancellation with automatic promotion & refund calculation\n" +
+                "• Multithreaded booking simulation demonstrating thread safety\n" +
+                "• Object serialization and file persistence\n" +
+                "• Java Swing graphical interface and interactive CLI";
         JOptionPane.showMessageDialog(this, info, "About RailSync", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -14,12 +14,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Central orchestrator for train reservations, dynamic seat allocation, and cancellations.
- * Demonstrates:
- * - Multithreading Synchronization (thread-safe seat booking)
- * - Collections Framework (ConcurrentHashMap, ArrayList, HashSet, Queue)
- * - Exception Handling (custom business exceptions)
- * - Generics and Defensive Programming
+ * Manages train reservations, seat allocations, cancellations, and user sessions.
  */
 public class ReservationManager implements Serializable {
     private static final long serialVersionUID = 1L;

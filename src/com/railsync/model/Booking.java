@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a complete booking transaction containing one or multiple passenger tickets.
- * Demonstrates composition, Collections (ArrayList), and Java Time API (LocalDate, LocalDateTime).
+ * Represents a train ticket booking with passenger tickets and journey details.
  */
 public class Booking implements Serializable {
     private static final long serialVersionUID = 1L;

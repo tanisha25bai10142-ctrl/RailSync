@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents an individual physical berth/seat in a coach.
- * Demonstrates encapsulation, Serializable, and equals/hashCode.
+ * Represents an individual physical seat/berth in a coach.
  */
 public class Seat implements Serializable {
     private static final long serialVersionUID = 1L;

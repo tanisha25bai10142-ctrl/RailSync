@@ -7,8 +7,7 @@ import com.railsync.model.Train;
 import java.time.LocalDateTime;
 
 /**
- * Interface defining fare calculation contracts.
- * Demonstrates Abstraction and Interface design in Core Java.
+ * Interface defining fare calculation and cancellation refund calculations.
  */
 public interface FareCalculator {
 

@@ -13,11 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
- * Generates formatted ASCII tickets and administrative audit reports.
- * Demonstrates:
- * - String Processing & StringBuilder
- * - Java File I/O (FileWriter, BufferedWriter)
- * - Clean tabular ASCII report presentation
+ * Generates formatted text tickets and summary reports.
  */
 public class ReportGenerator {
 

@@ -11,16 +11,9 @@ import com.railsync.util.ValidationUtils;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * Service for querying trains, stations, bookings, and passengers.
- * Demonstrates:
- * - Method Overloading
- * - Lambda Expressions
- * - Custom Comparators
- * - Stream API / Collections filtering
- * - String pattern searching
+ * Service for searching trains, bookings, and passengers.
  */
 public class SearchService {
 
@@ -51,7 +44,7 @@ public class SearchService {
     }
 
     /**
-     * Overloaded search filtering by required SeatClass.
+     * Searches trains between source and destination stations with a specific seat class.
      */
     public List<Train> searchTrains(Station source, Station destination, LocalDate journeyDate, SeatClass seatClass)
             throws InvalidStationException {
@@ -59,25 +52,33 @@ public class SearchService {
         if (seatClass == null) {
             return matched;
         }
-        return matched.stream()
-                .filter(t -> t.getAvailableClasses().contains(seatClass))
-                .collect(Collectors.toList());
+        List<Train> filtered = new ArrayList<>();
+        for (Train train : matched) {
+            if (train.getAvailableClasses().contains(seatClass)) {
+                filtered.add(train);
+            }
+        }
+        return filtered;
     }
 
     /**
-     * Search trains by partial number or name query.
+     * Search trains by partial number, name, or station name.
      */
     public List<Train> searchTrainsByQuery(String query) {
         if (query == null || query.trim().isEmpty()) {
             return new ArrayList<>(trainCatalog);
         }
         String cleanQuery = query.trim().toLowerCase();
-        return trainCatalog.stream()
-                .filter(t -> t.getTrainNumber().toLowerCase().contains(cleanQuery) ||
-                        t.getTrainName().toLowerCase().contains(cleanQuery) ||
-                        t.getSource().getName().toLowerCase().contains(cleanQuery) ||
-                        t.getDestination().getName().toLowerCase().contains(cleanQuery))
-                .collect(Collectors.toList());
+        List<Train> results = new ArrayList<>();
+        for (Train train : trainCatalog) {
+            if (train.getTrainNumber().toLowerCase().contains(cleanQuery) ||
+                train.getTrainName().toLowerCase().contains(cleanQuery) ||
+                train.getSource().getName().toLowerCase().contains(cleanQuery) ||
+                train.getDestination().getName().toLowerCase().contains(cleanQuery)) {
+                results.add(train);
+            }
+        }
+        return results;
     }
 
     // ================= Comparators & Sorting =================
@@ -104,46 +105,73 @@ public class SearchService {
         return sorted;
     }
 
-    // ================= Passenger & Booking Multi-Criteria Search =================
+    // ================= Passenger & Booking Search =================
 
     public Optional<Booking> findBookingByPNR(String pnr) {
-        if (pnr == null) return Optional.empty();
+        if (pnr == null) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(bookingMap.get(pnr.trim().toUpperCase()));
     }
 
     public List<Booking> searchBookingsByPassengerName(String partialName) {
-        if (partialName == null || partialName.trim().isEmpty()) return Collections.emptyList();
+        if (partialName == null || partialName.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
         String target = partialName.trim().toLowerCase();
-
-        return bookingMap.values().stream()
-                .filter(b -> b.getTickets().stream()
-                        .anyMatch(t -> t.getPassenger().getName().toLowerCase().contains(target)))
-                .collect(Collectors.toList());
+        List<Booking> results = new ArrayList<>();
+        for (Booking b : bookingMap.values()) {
+            for (Ticket t : b.getTickets()) {
+                if (t.getPassenger().getName().toLowerCase().contains(target)) {
+                    results.add(b);
+                    break;
+                }
+            }
+        }
+        return results;
     }
 
     public List<Booking> searchBookingsByPhone(String phone) {
-        if (phone == null || phone.trim().isEmpty()) return Collections.emptyList();
+        if (phone == null || phone.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
         String cleanPhone = phone.trim();
-
-        return bookingMap.values().stream()
-                .filter(b -> b.getTickets().stream()
-                        .anyMatch(t -> t.getPassenger().getPhone().contains(cleanPhone)))
-                .collect(Collectors.toList());
+        List<Booking> results = new ArrayList<>();
+        for (Booking b : bookingMap.values()) {
+            for (Ticket t : b.getTickets()) {
+                if (t.getPassenger().getPhone().contains(cleanPhone)) {
+                    results.add(b);
+                    break;
+                }
+            }
+        }
+        return results;
     }
 
     public List<Booking> searchBookingsByTrain(String trainNumber) {
-        if (trainNumber == null || trainNumber.trim().isEmpty()) return Collections.emptyList();
+        if (trainNumber == null || trainNumber.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
         String target = trainNumber.trim();
-
-        return bookingMap.values().stream()
-                .filter(b -> b.getTrainNumber().equalsIgnoreCase(target))
-                .collect(Collectors.toList());
+        List<Booking> results = new ArrayList<>();
+        for (Booking b : bookingMap.values()) {
+            if (b.getTrainNumber().equalsIgnoreCase(target)) {
+                results.add(b);
+            }
+        }
+        return results;
     }
 
     public List<Booking> searchBookingsByUser(String userId) {
-        if (userId == null) return Collections.emptyList();
-        return bookingMap.values().stream()
-                .filter(b -> b.getBookedByUserId().equalsIgnoreCase(userId))
-                .collect(Collectors.toList());
+        if (userId == null) {
+            return Collections.emptyList();
+        }
+        List<Booking> results = new ArrayList<>();
+        for (Booking b : bookingMap.values()) {
+            if (b.getBookedByUserId().equalsIgnoreCase(userId)) {
+                results.add(b);
+            }
+        }
+        return results;
     }
 }

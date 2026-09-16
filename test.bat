@@ -18,6 +18,6 @@ if not exist bin\com\railsync\TestRunner.class (
     call build.bat
 )
 
-echo [INFO] Running RailSync Automated 15-Scenario Verification Suite...
+echo [INFO] Running RailSync Automated Test Suite...
 "%JAVA_CMD%" -cp "bin" com.railsync.TestRunner
 pause

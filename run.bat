@@ -1,6 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
-title RailSync - Intelligent Train Reservation System
+title RailSync - Train Reservation System
 
 :: Check for Java runtime
 set "JAVA_CMD=java"
@@ -20,10 +20,10 @@ if %errorlevel% neq 0 (
 )
 
 if not exist bin\com\railsync\Main.class (
-    echo [INFO] Binaries not found. Triggering automated build...
+    echo [INFO] Binaries not found. Building project...
     call build.bat
     if %errorlevel% neq 0 exit /b 1
 )
 
-echo [INFO] Launching RailSync Modern Swing GUI...
+echo [INFO] Launching RailSync...
 "%JAVA_CMD%" -cp "bin" com.railsync.Main %*

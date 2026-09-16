@@ -8,9 +8,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
- * Robust implementation of FareCalculator modeling real-world Indian Railways fare rules.
- * Encapsulates distance-based slab tariffs, class multipliers, superfast surcharges,
- * age concessions (Child, Senior Citizen, Student), and time-tiered cancellation refunds.
+ * Calculates train ticket fares and cancellation refunds based on distance,
+ * seat class multiplier, concessions, and cancellation timing.
  */
 public class DynamicFareCalculator implements FareCalculator {
 

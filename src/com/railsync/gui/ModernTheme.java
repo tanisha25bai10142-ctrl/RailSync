@@ -10,9 +10,8 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 /**
- * Modern Design System and styling utilities for the Swing GUI.
- * Provides consistent typography, flat color palettes, padded buttons,
- * and card-based containers for a professional enterprise feel.
+ * Styling utilities and constants for the Swing GUI.
+ * Provides colors, fonts, button styling, and layout helpers.
  */
 public final class ModernTheme {
 
