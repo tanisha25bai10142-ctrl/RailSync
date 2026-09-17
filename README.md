@@ -238,15 +238,7 @@ java -jar RailSync.jar --cli
 #### Option 4: Using Windows Batch Script
 ```cmd
 run.bat --cli
-```
 
-### Example CLI Interactive Menu:
-```
-==================================================================
-        RailSync – Interactive Command-Line Console Application   
-               Core Java Train Reservation System                 
-==================================================================
-------------------------- MAIN MENU ------------------------------
   1. Search Trains (by Source & Destination)
   2. View All Trains Catalog
   3. Book Train Ticket
@@ -256,9 +248,9 @@ run.bat --cli
   7. Dynamic Fare & Concession Calculator
   8. Save System State to Disk
   9. Exit
-------------------------------------------------------------------
+
 Enter your choice (1-9):
-```
+
 
 ### Example Booking Flow in CLI:
 1. Choose option `3` (Book Train Ticket).
@@ -268,24 +260,7 @@ Enter your choice (1-9):
 5. Enter number of passengers: `1`.
 6. Enter details: `Rajesh Kumar`, Age `35`, Gender `M`, Phone `9876543210`, Berth `1` (Lower).
 7. System processes transaction, allocates confirmed berth `H1-1`, and prints:
-```
-================ BOOKING CONFIRMATION ================
-PNR Number        : RS989137
-Booking ID        : BK10004
-Train             : 12952 - Mumbai Rajdhani
-Route             : NDLS -> BCT
-Journey Date      : 2026-09-13
-Travel Class      : AC First Class (1A)
-Total Amount Paid : ₹4880.00
 
-Allocated Passenger Tickets:
-Ticket ID      | Passenger        | Age  | Status          | Seat/Berth              | Fare      
-------------------------------------------------------------------------------------------------
-TK-RS989137-1  | Rajesh Kumar     | 35   | Confirmed (CNF) | H1-1 (Lower Berth (LB)) | ₹4880.00  
-======================================================
-```
-
----
 
 ## 🖥️ Graphical User Interface (GUI) Execution
 
