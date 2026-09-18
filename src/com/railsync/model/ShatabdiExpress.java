@@ -3,7 +3,7 @@ package com.railsync.model;
 import java.time.LocalTime;
 
 /**
- * Premium same-day intercity chair car express.
+ * Daytime intercity chair car express train.
  */
 public class ShatabdiExpress extends Train {
     private static final long serialVersionUID = 1L;

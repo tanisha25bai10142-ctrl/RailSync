@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Seeds the RailSync platform with realistic Indian Railways reference data.
- * Includes:
- * - 16 Major Stations across multiple railway zones
- * - 9 Prominent Express/Rajdhani/Vande Bharat Trains
- * - Rich Coach and Berth configurations
- * - Sample Users (Admin & Passenger)
- * - Seeded Bookings with Confirmed, RAC, and Waiting List states
+ * Seeds initial sample data for the application:
+ * - 16 railway stations
+ * - 9 sample trains across different routes
+ * - Coach and berth configurations
+ * - Sample users (admin and passenger)
+ * - Initial bookings with Confirmed, RAC, and Waiting List states
  */
 public class SampleDataSeeder {
 

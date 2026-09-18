@@ -14,7 +14,7 @@ import java.util.*;
 public class FileManager {
 
     /**
-     * Data Transfer Object representing complete persistent snapshot of the system state.
+     * Holds the system state for serialization.
      */
     public static class SystemState implements Serializable {
         private static final long serialVersionUID = 1L;
@@ -37,10 +37,7 @@ public class FileManager {
     }
 
     /**
-     * Saves the entire system state using Object Serialization.
-     * Serialization is appropriate here because it preserves complete object graphs,
-     * polymorphic Train subclasses, seat status matrices, and queued ticket references
-     * without loss of internal references or class invariants.
+     * Saves the system state to file using Object Serialization.
      */
     public static void saveSystemState(ReservationManager manager, File file) throws IOException {
         if (file.getParentFile() != null && !file.getParentFile().exists()) {

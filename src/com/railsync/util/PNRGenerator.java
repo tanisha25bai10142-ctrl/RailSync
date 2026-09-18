@@ -4,8 +4,8 @@ import java.security.SecureRandom;
 import java.util.Set;
 
 /**
- * Generates cryptographically secure, unique Railway PNR numbers.
- * Example format: "RS482731" or "RS910283".
+ * Generates unique PNR numbers for bookings.
+ * Example format: "RS482731".
  */
 public final class PNRGenerator {
     private static final String PREFIX = "RS";
@@ -15,7 +15,7 @@ public final class PNRGenerator {
 
     /**
      * Generates a unique 6-digit PNR with prefix "RS".
-     * Checks against known PNR set to guarantee no collision.
+     * Checks against existing PNRs to avoid duplicates.
      */
     public static synchronized String generateUniquePNR(Set<String> existingPNRs) {
         String pnr;
@@ -25,7 +25,7 @@ public final class PNRGenerator {
             pnr = PREFIX + number;
             attempts++;
             if (attempts > 1000) {
-                // Fallback to high-entropy alphanumeric if numeric range gets crowded
+                // Fallback using timestamp if needed
                 pnr = PREFIX + System.currentTimeMillis() % 1000000;
                 break;
             }

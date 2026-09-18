@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Passenger interface providing train searching, dynamic multi-passenger booking,
- * PNR status enquiry, and ticket cancellation with realistic queue promotions and refund receipts.
+ * Passenger panel for searching trains, booking tickets,
+ * checking PNR status, and cancelling bookings.
  */
 public class PassengerPanel extends JPanel {
 

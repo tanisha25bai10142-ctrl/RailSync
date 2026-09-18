@@ -118,7 +118,7 @@ public class ReservationManager implements Serializable {
 
     /**
      * Books a ticket for one or more passengers in a single transaction.
-     * Synchronized on the train instance to guarantee absolute thread safety
+     * Synchronized on the train instance to prevent race conditions
      * during concurrent booking requests.
      */
     public Booking bookTicket(String trainNumber, LocalDate journeyDate, SeatClass seatClass,
@@ -216,8 +216,8 @@ public class ReservationManager implements Serializable {
     // ================= Cancellation & Promotion =================
 
     /**
-     * Cancels a specific ticket within a booking, computes refunds, and executes
-     * the automatic RAC / Waiting List promotion cascade.
+     * Cancels a specific ticket within a booking, computes refunds, and handles
+     * the automatic RAC and Waiting List queue promotion.
      */
     public synchronized RefundReceipt cancelTicket(String pnr, String ticketId)
             throws InvalidPNRException, CancellationNotAllowedException, TrainNotFoundException {

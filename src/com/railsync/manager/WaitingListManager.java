@@ -60,7 +60,7 @@ public class WaitingListManager implements Serializable {
     }
 
     /**
-     * Executes the realistic IR cancellation promotion cascade.
+     * Handles passenger promotion when a ticket is cancelled.
      *
      * @param key queue lookup key
      * @param cancelledTicket the ticket being cancelled

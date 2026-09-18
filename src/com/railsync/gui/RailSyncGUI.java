@@ -14,8 +14,8 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Main application window for RailSync.
- * Orchestrates user sessions, role-based panel switching (Passenger vs Admin),
- * persistence commands, and menu actions.
+ * Handles user sessions, panel switching (Passenger vs Admin),
+ * and menu actions.
  */
 public class RailSyncGUI extends JFrame {
 

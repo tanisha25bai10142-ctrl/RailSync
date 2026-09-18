@@ -20,12 +20,12 @@ Railway passenger ticketing systems are essential computerized applications that
 
 ## 2. Problem Statement
 
-Most introductory student projects treat railway booking as a simple counter decrement. However, a realistic railway reservation system must handle several real-world constraints:
+A railway reservation system involves several practical requirements beyond simple booking counts:
 
 1. **Multi-tier Seat Allocation:** When physical coach seats are filled, reservation requests must transition to shared RAC seats and subsequent Waiting List queues rather than being outright rejected.
-2. **Cancellation & Queue Cascade:** When a confirmed passenger cancels their booking, the vacant berth must not be wasted. The system must automatically promote the first RAC passenger to confirmed status, and the first Waiting List passenger to RAC.
+2. **Cancellation & Queue Cascade:** When a confirmed passenger cancels their booking, the system reallocates the berth to the first RAC passenger, and moves the first Waiting List passenger to RAC.
 3. **Race Conditions & Concurrency:** When multiple users attempt to book the last available berth at the same time, simultaneous threads can assign the same seat to two passengers unless access to the train inventory is synchronized.
-4. **Dynamic Fare & Concession Calculation:** Fares vary based on distance, train type multipliers, and passenger demographics (e.g. 40% senior citizen concession, free travel for infants).
+4. **Dynamic Fare & Concession Calculation:** Fares vary based on distance, train type multipliers, and passenger demographics (such as senior citizen concessions and free travel for infants).
 5. **State Persistence:** Train fleet information, station networks, and booking records must be saved to disk so data is retained across application restarts.
 
 ---
@@ -36,7 +36,7 @@ Most introductory student projects treat railway booking as a simple counter dec
 - Demonstrate **Object-Oriented Programming (OOP)** principles: abstraction, inheritance, encapsulation, and polymorphism.
 - Implement data structures from the **Java Collections Framework** (`HashMap`, `LinkedList`, `ArrayList`, `HashSet`).
 - Apply **multithreading and synchronization** to ensure thread-safe seat allocation.
-- Implement robust **exception handling** using custom checked exception classes.
+- Implement **exception handling** using custom checked exception classes.
 - Persist system state using **Java Object Serialization** (`ObjectInputStream`, `ObjectOutputStream`).
 - Provide both a terminal-based CLI for fast operations and a Java Swing GUI for graphical user interaction.
 
@@ -49,8 +49,8 @@ Most introductory student projects treat railway booking as a simple counter dec
 | **Inheritance & Abstraction** | Abstract base class `Train` extended by concrete train types: `RajdhaniExpress`, `ShatabdiExpress`, `VandeBharatExpress`, `SuperfastExpress`, and `ExpressTrain`. |
 | **Polymorphism & Interfaces** | `FareCalculator` interface implemented by `DynamicFareCalculator`. Train subclasses override speed, base rates, and catering charges. |
 | **Encapsulation & Validation** | Private model fields with getters/setters, defensive copying, and input validation in `ValidationUtils`. |
-| **Collections Framework** | `HashMap` for $O(1)$ PNR and station lookups; `LinkedList` as FIFO queues for RAC and Waiting List; `ArrayList` for seat and train rosters. |
-| **Multithreading & Synchronization** | `Thread`, `Runnable`, and fine-grained `synchronized (train)` blocks in `ReservationManager` preventing race conditions. |
+| **Collections Framework** | `HashMap` for fast PNR and station lookups; `LinkedList` as FIFO queues for RAC and Waiting List; `ArrayList` for seat and train rosters. |
+| **Multithreading & Synchronization** | `Thread`, `Runnable`, and `synchronized (train)` blocks in `ReservationManager` preventing race conditions during booking. |
 | **Custom Exception Handling** | Custom checked exceptions under `RailSyncException` (`SeatUnavailableException`, `InvalidPNRException`, `CancellationNotAllowedException`). |
 | **File I/O & Serialization** | Object serialization to `data/railsync_data.ser` for persistence; formatted reservation slip and report export via `FileWriter`. |
 | **GUI Development** | Java Swing components (`JFrame`, `JPanel`, `JTabbedPane`, `JTable`, `CardLayout`) with clean layouts. |
@@ -196,8 +196,8 @@ The application defines an abstract class `Train` containing common properties: 
 ### 7.2 Polymorphism
 Each subclass overrides methods such as `getBaseFareRatePerKm()` and `calculateCateringCharge()` to supply specialized pricing rules. At runtime, the fare calculator polymorphicly evaluates the exact subclass behavior without type-casting.
 
-### 7.3 Thread Safety via Monitor Locks
-To prevent race conditions during simultaneous bookings on the same train, seat allocation logic is enclosed inside a fine-grained monitor lock:
+### 7.3 Thread Safety via Synchronization
+To prevent race conditions when multiple threads book seats on the same train at the same time, seat allocation is synchronized on the train object:
 ```java
 synchronized (train) {
     // 1. Search available coach seats
@@ -205,7 +205,7 @@ synchronized (train) {
     // 3. Mark seat as booked
 }
 ```
-Synchronizing per-train rather than locking the entire reservation manager allows concurrent bookings on different trains to proceed in parallel without blocking each other.
+Synchronizing on the specific train object ensures that bookings on different trains can proceed in parallel without blocking each other.
 
 ---
 
@@ -310,27 +310,27 @@ Shows the generated text ticket slip exported by the system with complete journe
 
 ## 10. Challenges Faced & Solutions
 
-1. **Race Conditions in Seat Assignment:**
-   *Problem:* When multiple threads booked tickets concurrently, non-synchronized checks resulted in two passengers receiving the same berth.
-   *Solution:* Implemented fine-grained monitor locks on the individual `Train` object (`synchronized (train)`), ensuring atomicity during seat allocation while allowing concurrent bookings on different trains.
+1. **Race Conditions in Simultaneous Bookings:**
+   *Problem:* When multiple threads attempted to book seats on the same train at the same time, unsynchronized seat checks resulted in the same seat being allocated to multiple passengers.
+   *Solution:* Synchronized the seat allocation block on the `Train` instance (`synchronized (train)`), ensuring only one thread allocates seats on a given train at any instant while keeping bookings on other trains concurrent.
 
 2. **Managing Queue Reordering during Cancellations:**
-   *Problem:* Cancelling an RAC ticket required shifting remaining queue positions without breaking FIFO order.
-   *Solution:* Utilized `java.util.LinkedList` and iterated through the queue to decrement queue positions sequentially upon removal.
+   *Problem:* Cancelling an RAC ticket required updating remaining queue positions without breaking FIFO order.
+   *Solution:* Used `java.util.LinkedList` and updated queue positions sequentially upon removal.
 
 3. **Handling Overnight Journey Durations:**
    *Problem:* Subtracting departure time from arrival time for overnight trains resulted in negative durations.
-   *Solution:* Adjusted the duration calculation by adding 24 hours (86,400 seconds) when the arrival time is numerically earlier than departure time.
+   *Solution:* Adjusted the duration calculation by adding 24 hours when the arrival time is earlier than departure time.
 
 ---
 
 ## 11. Conclusion & Key Takeaways
 
-Developing RailSync provided practical experience in designing and building a modular Core Java application:
-- **Object-Oriented Design:** Applied abstraction, inheritance, polymorphism, and encapsulation to create a clean, maintainable domain model.
-- **Concurrency & Synchronization:** Understood how thread safety is enforced in Java using monitor locks and synchronized blocks.
-- **Collections Framework:** Gained hands-on experience selecting appropriate data structures (`HashMap`, `LinkedList`, `ArrayList`) based on operational requirements.
-- **GUI Programming:** Built an interactive desktop application using Java Swing with clean separation between UI components and core business logic.
+Developing RailSync provided practical experience in designing and building a Core Java application:
+- **Object-Oriented Design:** Applied abstraction, inheritance, polymorphism, and encapsulation to build a modular system.
+- **Concurrency & Synchronization:** Understood how thread safety is handled in Java using synchronized blocks.
+- **Collections Framework:** Gained experience choosing appropriate data structures (`HashMap`, `LinkedList`, `ArrayList`) for different use cases.
+- **GUI Programming:** Built a desktop user interface using Java Swing with clean separation between UI components and business logic.
 
 ---
 

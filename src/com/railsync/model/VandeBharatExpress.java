@@ -3,7 +3,7 @@ package com.railsync.model;
 import java.time.LocalTime;
 
 /**
- * Modern semi-high speed train with distributed traction.
+ * Semi-high speed express train.
  */
 public class VandeBharatExpress extends Train {
     private static final long serialVersionUID = 1L;

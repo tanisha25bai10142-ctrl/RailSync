@@ -5,7 +5,7 @@ import java.util.Objects;
 
 /**
  * Represents an individual ticket allocated to a passenger within a booking.
- * Holds seat allocation, dynamic RAC/WL queue positions, and status transitions.
+ * Holds seat allocation, queue positions, and booking status.
  */
 public class Ticket implements Serializable {
     private static final long serialVersionUID = 1L;

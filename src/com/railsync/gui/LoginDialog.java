@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * Authentication dialog offering 1-click Demo credentials and manual login/registration.
+ * Login dialog for user authentication and role selection.
  */
 public class LoginDialog extends JDialog {
 

@@ -18,7 +18,7 @@ import java.util.Map;
 public class ReportGenerator {
 
     /**
-     * Generates an official formatted Indian Railways e-Ticket as a String.
+     * Generates formatted ticket text for a booking.
      */
     public static String generateTicketText(Booking booking) {
         if (booking == null) return "No booking details available.";
@@ -83,7 +83,7 @@ public class ReportGenerator {
     }
 
     /**
-     * Generates a comprehensive railway administrative audit report.
+     * Generates an administrative summary report.
      */
     public static String generateAdminReport(AnalyticsService analytics) {
         StringBuilder sb = new StringBuilder(1024);
